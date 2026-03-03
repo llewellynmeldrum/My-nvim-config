@@ -1,3 +1,4 @@
+-- Flash a highlight of selection when yanking
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
     group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
@@ -5,6 +6,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
         vim.highlight.on_yank()
     end,
 })
+
+---------------------------------------------------------------
+-- MSL (METAL SHADER LANGUAGE)--
+---------------------------------------------------------------
 
 -- Get treesitter for .metal files for syntax highlighting
 vim.filetype.add({
@@ -20,6 +25,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
     end,
 })
+
+---------------------------------------------------------------
+-- ZEN MODE COMMANDS --
+---------------------------------------------------------------
 vim.api.nvim_create_autocmd("User", {
     pattern = "ZenEnter",
     callback = function()

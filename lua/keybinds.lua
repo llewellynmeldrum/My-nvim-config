@@ -1,11 +1,12 @@
 local ut = require("functions")
 local toggle_reading_mode = ut.toggle_bools(vim.o, "rnu", "wrap", "nu", "cursorline", "signcolumn")
+
 vim.keymap.set("n", "<leader>rm", toggle_reading_mode, { desc = "Toggle [r]eading [m]ode" })
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Open netrw at the current files dir." })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Disable the highlighting of search results" })
 
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
@@ -16,3 +17,9 @@ vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
+
+local function force_unbind(modes, keybind)
+    vim.keymap.set(modes, keybind, "<Nop>", { noremap = true, silent = true })
+end
+-- Disable the f1 key, becaues I always accidentally hit it
+force_unbind({ "n", "i", "v" }, "<F1>")

@@ -22,6 +22,7 @@ return {
 
         -- Useful for getting pretty icons, but requires a Nerd Font.
         { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
+        { "andrew-george/telescope-themes" },
     },
     config = function()
         require("telescope").setup({
@@ -31,26 +32,63 @@ return {
                     require("telescope.themes").get_dropdown(),
                 },
             },
+            pickers = {
+                colorscheme = {
+                    enable_preview = true,
+                    attach_mappings = function(_, map)
+                        map("i", "<CR>", function(prompt_bufnr)
+                            local entry = require("telescope.actions.state").get_selected_entry()
+                            require("telescope.actions").close(prompt_bufnr)
+                            SetColorscheme(entry.value) -- save it persistently!
+                        end)
+                        return true
+                    end,
+                },
+            },
         })
 
         -- Enable Telescope extensions if they are installed
         pcall(require("telescope").load_extension, "fzf")
         pcall(require("telescope").load_extension, "ui-select")
+        pcall(require("telescope").load_extension, "themes")
 
         -- See `:help telescope.builtin`
         local builtin = require("telescope.builtin")
+        --- Lists available help tags and opens a new window with the relevant help info on `<cr>`
         vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
+
         vim.keymap.set("n", "gm", ":Man <C-r><C-w><CR>", { desc = "Open man page for word under cursor" })
+
+        --- Lists normal mode keymappings, runs the selected keymap on `<cr>`
         vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
+
+        --- Search for files (respecting .gitignore)
         vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-        vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
+
+        --- Lists all of the community maintained pickers built into Telescope
+        vim.keymap.set("n", "<leader>st", builtin.builtin, { desc = "[S]earch [T]elescope" })
+
+        -- Switch between source and header file for current symbol or class
+        vim.keymap.set("n", "<leader>ss", "<Cmd>ClangdSwitchSourceHeader<CR>", { desc = "[S]witch [S]ource/header" })
+
+        -- Show clangd AST view
+        vim.keymap.set("n", "<leader>as", "<Cmd>ClangdAST<CR>", { desc = "clangd show [A][S]T" })
+
+        --- Searches for the string under your cursor in your current working directory
         vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+
+        --- Search for a string and get results live as you type, respects .gitignore
         vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
-        vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
+
+        --- Reopens previous search
         vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
+
+        -- Search recently opened files
         vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+
         vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
+        vim.keymap.set("n", "<leader>cc", ":Telescope colorscheme<CR>", { noremap = true, silent = true, desc = "[C]hange [C]olorscheme" })
         -- Slightly advanced example of overriding default behavior and theme
         --      vim.keymap.set('n', '<leader>', function()
         --        -- You can pass additional configuration to Telescope to change the theme, layout, etc.

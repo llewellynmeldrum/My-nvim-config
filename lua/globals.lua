@@ -1,16 +1,17 @@
-TAB_WIDTH_BASED = 8 -- for real languages, like c, c++ etc
-TAB_WIDTH_CRINGE = 4 -- for heavy indentation languages, like js, lua,
-TAB_WIDTH_EXTRA_CRINGE = 2 -- for the really bad ones.
+vim.env.PATH = "/usr/bin/java" .. vim.env.PATH
+vim.g.nvim_start_cwd = vim.fn.getcwd()
+TAB_WIDTH = 4 -- for real languages, like c, c++ etc
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 vim.o.cursorline = true
+vim.opt.colorcolumn = "100"
 vim.o.cursorlineopt = "number"
 vim.o.signcolumn = "yes"
-vim.opt.expandtab = false
-vim.opt.tabstop = TAB_WIDTH_BASED
-vim.opt.shiftwidth = TAB_WIDTH_BASED
+vim.opt.expandtab = true
+vim.opt.tabstop = TAB_WIDTH
+vim.opt.shiftwidth = TAB_WIDTH
 
 vim.g.have_nerd_font = true
 

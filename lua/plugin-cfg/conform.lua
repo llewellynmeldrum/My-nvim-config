@@ -27,25 +27,18 @@ return {
                 lsp_format_opt = "fallback"
             end
             return {
-                timeout_ms = 500,
+                timeout_ms = 1000,
                 lsp_format = lsp_format_opt,
             }
         end,
         formatters_by_ft = {
             lua = { "stylua" },
-            c = { "astyle" },
-            cpp = { "astyle" },
-
-            -- Conform can also run multiple formatters sequentially
-            -- python = { "isort", "black" },
-            --
-            -- You can use 'stop_after_first' to run the first available formatter from the list
-            -- javascript = { "prettierd", "prettier", stop_after_first = true },
+            c = { "clang-format" },
+            cpp = { "clang-format" },
+            objc = { "clang-format" },
+            objcpp = { "clang-format" },
         },
         formatters = {
-            astyle = {
-                prepend_args = { "--style=google", "--indent=tab", "--align-pointer=name", "--indent-preproc-block", "-p" },
-            },
             stylua = {},
         },
     },
